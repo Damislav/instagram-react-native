@@ -2,7 +2,7 @@ import { StyleSheet, Text, Image, View } from "react-native";
 import React from "react";
 import { TouchableOpacity } from "react-native-web";
 
-const Header = () => {
+const Header = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity>
@@ -12,7 +12,7 @@ const Header = () => {
         />
       </TouchableOpacity>
       <View style={styles.iconsContainer}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.push("NewPostScreen")}>
           <Image
             style={styles.icon}
             source={require("../../assets/icons8-plus-math-50.png")}
@@ -57,7 +57,7 @@ export const styles = StyleSheet.create({
     height: 30,
     color: "white",
     marginLeft: 10,
-    resizeMode: "containe",
+    resizeMode: "contain",
   },
   unreadBadge: {
     color: "white",
@@ -73,8 +73,8 @@ export const styles = StyleSheet.create({
     zIndex: 100,
   },
   unreadBadgeText: {
-    color: "white",
-    fontWeight: 600,
+    color: "#ffff",
+    fontWeight: "600",
   },
 });
 

@@ -57,7 +57,7 @@ const PostImage = ({ post }) => (
   </View>
 );
 const PostFooter = () => (
-  <View style={{ flexDirection: "row" }}>
+  <View style={{ flexDirection: "row", height: 50 }}>
     <View style={styles.leftFooterIconContainer}>
       <Icon imgStyle={styles.footerIcon} imgUrl={postFooterIcons[0].imageUrl} />
       <Icon imgStyle={styles.footerIcon} imgUrl={postFooterIcons[1].imageUrl} />
@@ -71,14 +71,21 @@ const PostFooter = () => (
     </View>
   </View>
 );
+const Icon = (imgStyle, imgUrl) => (
+  <View>
+    {/* {console.log(imgStyle, imgUrl)} */}
+    <Image style={imgStyle} source={{ uri: imgUrl }} />
+    <Image style={imgStyle} source={{ uri: imgUrl }} />
+
+    <Image style={imgStyle} source={{ uri: imgUrl }} />
+  </View>
+);
 const postFooterIcons = [
   {
     name: "Like",
-    imageUrl:
-      "https://cdn-icons.flaticon.com/png/512/6111/premium/6111867.png?token=exp=1644592511~hmac=f9f36270db4f8d9807f9e802ef476a0f",
+    imageUrl: "https://img.icons8.com/ios/50/ffffff/like--v1.png",
 
-    likedImageUrl:
-      "https://cdn-icons.flaticon.com/png/512/6111/premium/6111867.png?token=exp=1644592511~hmac=f9f36270db4f8d9807f9e802ef476a0f",
+    likedImageUrl: "https://img.icons8.com/ios-filled/50/ffffff/like--v1.png",
   },
   {
     name: "Comment",
@@ -96,14 +103,6 @@ const postFooterIcons = [
       "https://svg-clipart.com/clipart/heart/wQ2JmBo-white-heart-outline-new-clipart.png",
   },
 ];
-
-const Icon = (imgStyle, imgUrl) => (
-  <View>
-    <Image style={imgStyle} source={{ uri: imgUrl }} />
-    <Image style={imgStyle} source={{ uri: imgUrl }} />
-    <Image style={imgStyle} source={{ uri: imgUrl }} />
-  </View>
-);
 
 const Likes = ({ post }) => (
   <View style={{ flexDirection: "row", marginTop: 4 }}>
@@ -155,7 +154,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     marginRight: 6,
     borderWidth: 1.6,
-    borderColor: "ff8501",
+    borderColor: "#ff8501",
   },
   footerIcon: {
     width: 33,

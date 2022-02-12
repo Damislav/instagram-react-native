@@ -1,13 +1,9 @@
-import { StyleSheet, Text, View } from "react-native";
-
-import HomeScreen from "./screens/HomeScreen";
+import { StyleSheet, View } from "react-native";
+import SignedInStack from "./navigation";
+import React from "react";
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <HomeScreen />
-    </View>
-  );
+  return <SignedInStack />;
 }
 
 const styles = StyleSheet.create({
