@@ -6,12 +6,13 @@ import {
   Button,
   Pressable,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import React from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import Validator from "email-validator";
-
+import firebase from "../../firebase";
 const SignupForm = ({ navigation }) => {
   const SignupFormSchema = Yup.object().shape({
     email: Yup.string().email().required("An email is required"),
@@ -21,13 +22,20 @@ const SignupForm = ({ navigation }) => {
       .required()
       .min(6, "Your password has to have at least 8 characthere"),
   });
-
+  const onSignup = async (email, password) => {
+    try {
+      await firebase.auth().createUserWithEmailAndPassword(email, password);
+      console.log("user created succesefully");
+    } catch (error) {
+      Alert.alert(error.message);
+    }
+  };
   return (
     <View style={styles.wrapper}>
       <Formik
         initialValues={{ email: "", username: "", password: "" }}
         validationSchema={SignupFormSchema}
-        onSubmit={(values) => console.log(values)}
+        onSubmit={(values) => onSignup(values.email, values.password)}
         validateOnMount={true}
       >
         {({ handleChange, handleBlur, handleSubmit, values, isValid }) => {
@@ -62,7 +70,7 @@ const SignupForm = ({ navigation }) => {
                   styles.inputField,
                   {
                     borderColor:
-                      1 > values.username.length || values.username.length < 6
+                      1 > values.username.length || values.username.length > 6
                         ? "#ccc"
                         : "red",
                   },
@@ -73,7 +81,6 @@ const SignupForm = ({ navigation }) => {
                   placeholder="Username"
                   autoCapitalize="none"
                   autoConnect={false}
-                  secureTextEntry={true}
                   textContentType="username"
                   onChangeText={handleChange("username")}
                   onBlur={handleBlur("username")}

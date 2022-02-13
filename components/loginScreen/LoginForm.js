@@ -4,14 +4,16 @@ import {
   Text,
   StyleSheet,
   Pressable,
-  TouchableOpacity,
   Alert,
+  TouchableOpacity,
 } from "react-native";
+
 import React, { useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import Validator from "email-validator";
 import firebase from "../../firebase";
+
 const LoginForm = ({ navigation }) => {
   const LoginFormSchema = Yup.object().shape({
     email: Yup.string().email().required("An email is required"),
@@ -23,9 +25,17 @@ const LoginForm = ({ navigation }) => {
   const onLogin = async (email, password) => {
     try {
       await firebase.auth().signInWithEmailAndPassword(email, password);
-      console.log("firebase logged in", email, password);
+      console.log(email, password);
     } catch (error) {
-      Alert.alert(error.message);
+      console.log("error");
+      Alert.alert(error.message + "\n\n... What would you like to do next?", [
+        {
+          text: "OK",
+          onPress: () => console.log("OK"),
+          style: "cancel",
+        },
+        { text: "Sign up", onPress: () => navigation.push("SignupScreen") },
+      ]);
     }
   };
   return (
@@ -33,7 +43,9 @@ const LoginForm = ({ navigation }) => {
       <Formik
         validateOnMount={true}
         validationSchema={LoginFormSchema}
-        onSubmit={(values) => console.log(values)}
+        onSubmit={(values) => {
+          onLogin(values.email, values.password);
+        }}
         initialValues={{ email: "", password: "" }}
       >
         {({ handleChange, handleBlur, handleSubmit, values, isValid }) => {
@@ -89,13 +101,13 @@ const LoginForm = ({ navigation }) => {
               <View style={{ alignItems: "flex-end", marginBottom: 30 }}>
                 <Text style={{ color: "#6bb0f5" }}>Forgot password</Text>
               </View>
-              <Pressable
+              <TouchableOpacity
                 titleSize={20}
                 style={styles.button}
                 onPress={handleSubmit}
               >
                 <Text style={styles.buttonText}> Log in</Text>
-              </Pressable>
+              </TouchableOpacity>
               <View style={styles.signupContainer}>
                 <Text>Don't have an account?</Text>
                 <TouchableOpacity
