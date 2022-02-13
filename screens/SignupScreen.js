@@ -1,11 +1,12 @@
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, StyleSheet, Image } from "react-native";
 
 import React from "react";
-import LoginForm from "../components/loginScreen/LoginForm";
+import SignupForm from "../components/signupScreen/SignupForm";
+
 const instaLogo =
   "https://www.edigitalagency.com.au/wp-content/uploads/new-instagram-logo-png-transparent.png";
 
-const LoginScreen = ({ navigation }) => (
+const SignupScreen = ({ navigation }) => (
   <View style={styles.container}>
     <View style={styles.logoContainer}>
       <Image
@@ -15,7 +16,7 @@ const LoginScreen = ({ navigation }) => (
         }}
       />
     </View>
-    <LoginForm navigation={navigation} />
+    <SignupForm navigation={navigation} />
   </View>
 );
 const styles = StyleSheet.create({
@@ -27,4 +28,4 @@ const styles = StyleSheet.create({
   },
   logoContainer: { alignItems: "center", marginTop: 60 },
 });
-export default LoginScreen;
+export default SignupScreen;
