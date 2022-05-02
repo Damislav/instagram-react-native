@@ -12,7 +12,7 @@ import React from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import Validator from "email-validator";
-import firebase from "../../firebase";
+import { firebase, db } from "../../firebase";
 const SignupForm = ({ navigation }) => {
   const SignupFormSchema = Yup.object().shape({
     email: Yup.string().email().required("An email is required"),
@@ -22,10 +22,26 @@ const SignupForm = ({ navigation }) => {
       .required()
       .min(6, "Your password has to have at least 8 characthere"),
   });
-  const onSignup = async (email, password) => {
+  // const getRandomProfilePicture = async () => {
+  //   const response = await fetch("https://randomuser.me/api");
+  //   const data = await response.json();
+  //   console.log(data.results[0].picture.large);
+  //   return data.results[0].picture.large;
+  // };
+
+  const onSignup = async (email, password, username) => {
     try {
-      await firebase.auth().createUserWithEmailAndPassword(email, password);
-      console.log("user created succesefully");
+      const authUser = await firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password);
+      // await db.collection("cities").doc("new-city-id").set(data);
+      db.collection("users").doc(authUser.user.email).set({
+        owner_uid: authUser.user.uid,
+        username: username,
+        password: authUser.user.password,
+        email: authUser.user.email,
+        // profile_picture: await getRandomProfilePicture(),
+      });
     } catch (error) {
       Alert.alert(error.message);
     }
@@ -35,7 +51,9 @@ const SignupForm = ({ navigation }) => {
       <Formik
         initialValues={{ email: "", username: "", password: "" }}
         validationSchema={SignupFormSchema}
-        onSubmit={(values) => onSignup(values.email, values.password)}
+        onSubmit={(values) =>
+          onSignup(values.email, values.password, values.username)
+        }
         validateOnMount={true}
       >
         {({ handleChange, handleBlur, handleSubmit, values, isValid }) => {
@@ -113,13 +131,13 @@ const SignupForm = ({ navigation }) => {
               <View style={{ alignItems: "flex-end", marginBottom: 30 }}>
                 <Text style={{ color: "#6bb0f5" }}>Forgot password</Text>
               </View>
-              <Pressable
+              <TouchableOpacity
                 titleSize={20}
                 style={styles.button}
                 onPress={handleSubmit}
               >
                 <Text style={styles.buttonText}> Register </Text>
-              </Pressable>
+              </TouchableOpacity>
               <View style={styles.signupContainer}>
                 <Text>You have an account?</Text>
                 <TouchableOpacity onPress={() => navigation.goBack()}>

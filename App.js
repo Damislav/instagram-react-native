@@ -1,11 +1,6 @@
-import { StyleSheet, View } from "react-native";
-import SignedInStack from "./navigation";
 import React from "react";
+import AuthNavigation from "./AuthNavigation";
 
 export default function App() {
-  return <SignedInStack />;
+  return <AuthNavigation />;
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "black" },
-});
